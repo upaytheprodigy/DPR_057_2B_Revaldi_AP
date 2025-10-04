@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnggotaDprController;
+use App\Http\Controllers\KomponenGajiController;
 
 // Redirect root ke login
 Route::get('/', function () {
@@ -26,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Routes untuk Data Anggota DPR (Public bisa lihat, Admin bisa CRUD)
     Route::get('/anggota', [AnggotaDprController::class, 'index'])->name('anggota.index');
+    
+    // Routes untuk Komponen Gaji
+    Route::resource('komponen-gaji', KomponenGajiController::class)->except(['show']);
     
     // Routes khusus Admin untuk Anggota DPR
     Route::middleware(['role:Admin'])->group(function () {

@@ -113,6 +113,11 @@
                 <a href="{{ route('anggota.index') }}" class="btn btn-primary btn-sm w-100 mt-2">
                     Lihat Data Anggota DPR
                 </a>
+                @if(Auth::user()->role == 'Admin')
+                <a href="{{ route('komponen-gaji.index') }}" class="btn btn-secondary btn-sm w-100 mt-2">
+                    Lihat Data Komponen Gaji
+                </a>
+                @endif
             </div>
         </div>
     </div>
@@ -134,7 +139,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="#" class="btn btn-warning w-100" onclick="alert('Fitur belum tersedia')">
+                        <a href="{{ route('komponen-gaji.create') }}" class="btn btn-warning w-100">
                             <i class="bi bi-cash-stack"></i> Tambah Komponen Gaji
                         </a>
                     </div>

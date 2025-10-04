@@ -26,7 +26,7 @@
                     </li>
                     @if(Auth::user()->role == 'admin')
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Komponen Gaji</a>
+                        <a class="nav-link {{ request()->routeIs('komponen-gaji.*') ? 'active' : '' }}" href="{{ route('komponen-gaji.index') }}">Komponen Gaji</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Penggajian</a>

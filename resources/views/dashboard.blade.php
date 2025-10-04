@@ -117,6 +117,9 @@
                 <a href="{{ route('komponen-gaji.index') }}" class="btn btn-secondary btn-sm w-100 mt-2">
                     Lihat Data Komponen Gaji
                 </a>
+                    <a href="{{ route('penggajian.index') }}" class="btn btn-info btn-sm w-100 mt-2">
+                        Lihat Data Penggajian
+                    </a>
                 @endif
             </div>
         </div>
@@ -144,7 +147,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="#" class="btn btn-info w-100" onclick="alert('Fitur belum tersedia')">
+                        <a href="{{ route('penggajian.create') }}" class="btn btn-info w-100">
                             <i class="bi bi-file-earmark-text"></i> Tambah Data Penggajian
                         </a>
                     </div>

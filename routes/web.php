@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnggotaDprController;
 use App\Http\Controllers\KomponenGajiController;
+use App\Http\Controllers\PenggajianController;
 
 // Redirect root ke login
 Route::get('/', function () {
@@ -39,4 +40,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/anggota/{id}', [AnggotaDprController::class, 'update'])->name('anggota.update');
         Route::delete('/anggota/{id}', [AnggotaDprController::class, 'destroy'])->name('anggota.destroy');
     });
+        // Routes untuk Penggajian
+        Route::get('penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
+        Route::get('penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
+        Route::post('penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
+        Route::get('penggajian/{id_komponen_gaji}/{id_anggota}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
+        Route::put('penggajian/{id_komponen_gaji}/{id_anggota}', [PenggajianController::class, 'update'])->name('penggajian.update');
+        Route::delete('penggajian/{id_komponen_gaji}/{id_anggota}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 });

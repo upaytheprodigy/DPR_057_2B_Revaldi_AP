@@ -7,7 +7,7 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Data Anggota DPR</h2>
-            @if(Auth::user()->role == 'admin')
+            @if(Auth::user()->role == 'Admin')
             <a href="{{ route('anggota.create') }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Tambah Anggota
             </a>
@@ -59,7 +59,9 @@
                                 <td>{{ $item->nama_depan }}</td>
                                 <td>{{ $item->nama_belakang }}</td>
                                 <td>{{ $item->gelar_belakang }}</td>
-                                <td>{{ $item->jabatan }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ $item->jabatan }}</span>
+                                </td>
                                 <td>{{ $item->status_pernikahan }}</td>
                                 <td>{{ $item->jumlah_anak }}</td>
                                 @if(Auth::user()->role == 'Admin')

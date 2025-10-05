@@ -7,85 +7,82 @@ use Illuminate\Http\Request;
 
 class KomponenGajiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Menampilkan daftar komponen gaji
+    public function index(Request $request)
     {
-        $komponengajis = KomponenGaji::all();
-        return view('admin.komponen_gaji.index', compact('komponengajis'));
+        $search = $request->input('search');
+        
+        $komponenGaji = KomponenGaji::when($search, function($query, $search) {
+            return $query->where('id_komponen_gaji', 'like', "%{$search}%")
+                        ->orWhere('nama_komponen', 'like', "%{$search}%")
+                        ->orWhere('kategori', 'like', "%{$search}%")
+                        ->orWhere('jabatan', 'like', "%{$search}%")
+                        ->orWhere('nominal', 'like', "%{$search}%")
+                        ->orWhere('satuan', 'like', "%{$search}%");
+        })->orderBy('id_komponen_gaji', 'asc')->paginate(10);
+        
+        return view('admin.komponen_gaji.index', compact('komponenGaji', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form tambah komponen gaji
     public function create()
     {
         return view('admin.komponen_gaji.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan data komponen gaji
     public function store(Request $request)
     {
         $request->validate([
             'nama_komponen' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Gaji Pokok,Tunjangan Melekat,Tunjangan Lain',
-            'jabatan' => 'required|string|in:Ketua,Anggota,Wakil Ketua',
-            'nominal' => 'required|numeric',
-            'satuan' => 'required|string|in:Bulan,Periode',
+            'kategori' => 'required|in:Gaji Pokok,Tunjangan Melekat,Tunjangan Lain',
+            'jabatan' => 'required|in:Ketua,Wakil Ketua,Anggota,Semua',
+            'nominal' => 'required|numeric|min:0',
+            'satuan' => 'required|in:Bulan,Hari,Periode',
+        ], [
+            'nama_komponen.required' => 'Nama komponen wajib diisi',
+            'kategori.required' => 'Kategori wajib diisi',
+            'jabatan.required' => 'Jabatan wajib dipilih',
+            'nominal.required' => 'Nominal wajib diisi',
+            'nominal.numeric' => 'Nominal harus berupa angka',
+            'satuan.required' => 'Satuan wajib dipilih',
         ]);
 
         KomponenGaji::create($request->all());
 
-        return redirect()->route('komponen-gaji.index')
-                         ->with('success', 'Komponen Gaji created successfully.');
+        return redirect()->route('komponen-gaji.index')->with('success', 'Komponen gaji berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Menampilkan form edit komponen gaji
+    public function edit($id)
     {
-        // Not used
+        $komponen = KomponenGaji::findOrFail($id);
+        return view('admin.komponen_gaji.edit', compact('komponen'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(KomponenGaji $komponenGaji)
-    {
-        return view('admin.komponen_gaji.edit', compact('komponenGaji'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, KomponenGaji $komponenGaji)
+    // Mengupdate data komponen gaji
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_komponen' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Gaji Pokok,Tunjangan Melekat,Tunjangan Lain',
-            'jabatan' => 'required|string|in:Ketua,Anggota,Wakil Ketua',
-            'nominal' => 'required|numeric',
-            'satuan' => 'required|string|in:Bulan,Periode',
+            'kategori' => 'required|in:Gaji Pokok,Tunjangan Melekat,Tunjangan Lain',
+            'jabatan' => 'required|in:Ketua,Wakil Ketua,Anggota,Semua',
+            'nominal' => 'required|numeric|min:0',
+            'satuan' => 'required|in:Bulan,Hari,Periode',
         ]);
 
-        $komponenGaji->update($request->all());
+        $komponen = KomponenGaji::findOrFail($id);
+        $komponen->update($request->all());
 
-        return redirect()->route('komponen-gaji.index')
-                         ->with('success', 'Komponen Gaji updated successfully.');
+        return redirect()->route('komponen-gaji.index')->with('success', 'Komponen gaji berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(KomponenGaji $komponenGaji)
+    // Menghapus data komponen gaji
+    public function destroy($id)
     {
-        $komponenGaji->delete();
+        $komponen = KomponenGaji::findOrFail($id);
+        $komponen->delete();
 
-        return redirect()->route('komponen-gaji.index')
-                         ->with('success', 'Komponen Gaji deleted successfully.');
+        return redirect()->route('komponen-gaji.index')->with('success', 'Komponen gaji berhasil dihapus!');
     }
 }

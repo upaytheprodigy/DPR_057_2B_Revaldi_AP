@@ -24,12 +24,14 @@
                         <a class="nav-link {{ request()->routeIs('anggota.*') ? 'active' : '' }}" 
                            href="{{ route('anggota.index') }}">Data Anggota</a>
                     </li>
-                    @if(Auth::user()->role == 'admin')
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('komponen-gaji.*') ? 'active' : '' }}" href="{{ route('komponen-gaji.index') }}">Komponen Gaji</a>
+                        <a class="nav-link {{ request()->routeIs('penggajian.*') ? 'active' : '' }}" 
+                           href="{{ route('penggajian.index') }}">Data Penggajian</a>
                     </li>
+                    @if(Auth::user()->role == 'Admin')
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Penggajian</a>
+                        <a class="nav-link {{ request()->routeIs('komponen-gaji.*') ? 'active' : '' }}" 
+                        href="{{ route('komponen-gaji.index') }}">Komponen Gaji</a>
                     </li>
                     @endif
                 </ul>

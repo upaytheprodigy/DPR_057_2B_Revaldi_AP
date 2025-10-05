@@ -7,20 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Penggajian extends Model
 {
     protected $table = 'penggajian';
+    protected $primaryKey = 'id_penggajian';
+    public $timestamps = false;
+    
     protected $fillable = [
-        'id_komponen_gaji',
         'id_anggota',
+        'id_komponen_gaji',
     ];
 
-    public $timestamps = false;
-
+    // Relasi ke AnggotaDpr
     public function anggota()
     {
         return $this->belongsTo(AnggotaDpr::class, 'id_anggota', 'id_anggota');
     }
 
-        public function komponenGaji()
-        {
-            return $this->belongsTo(KomponenGaji::class, 'id_komponen_gaji', 'id_komponen_gaji');
-        }
+    // Relasi ke KomponenGaji
+    public function komponen()
+    {
+        return $this->belongsTo(KomponenGaji::class, 'id_komponen_gaji', 'id_komponen_gaji');
+    }
 }

@@ -10,10 +10,10 @@
                 <h4>Edit Data Anggota DPR</h4>
             </div>
             <div class="card-body">
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -57,6 +57,7 @@
                         <select class="form-select @error('jabatan') is-invalid @enderror" 
                                 id="jabatan" name="jabatan" required>
                             <option value="">-- Pilih Jabatan --</option>
+                            {{-- Menggunakan '==' (perbandingan), bukan '=' (assignment) --}}
                             <option value="Ketua" {{ old('jabatan', $anggota->jabatan) == 'Ketua' ? 'selected' : '' }}>Ketua</option>
                             <option value="Wakil Ketua" {{ old('jabatan', $anggota->jabatan) == 'Wakil Ketua' ? 'selected' : '' }}>Wakil Ketua</option>
                             <option value="Anggota" {{ old('jabatan', $anggota->jabatan) == 'Anggota' ? 'selected' : '' }}>Anggota</option>
@@ -91,6 +92,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
+                        {{-- Pastikan nama rute sudah benar (tanpa 'admin.') --}}
                         <a href="{{ route('anggota.index') }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>

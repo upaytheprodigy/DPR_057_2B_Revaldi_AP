@@ -7,28 +7,34 @@ use Illuminate\Http\Request;
 
 class AnggotaDprController extends Controller
 {
-    // Menampilkan daftar anggota (READ)
+    /**
+     * Menampilkan daftar anggota (READ)
+     */
     public function index(Request $request)
     {
         $search = $request->input('search');
         
         $anggota = AnggotaDpr::when($search, function($query, $search) {
             return $query->where('nama_depan', 'like', "%{$search}%")
-                        ->orWhere('nama_belakang', 'like', "%{$search}%")
-                        ->orWhere('jabatan', 'like', "%{$search}%")
-                        ->orWhere('id_anggota', 'like', "%{$search}%");
-        })->orderBy('id_anggota', 'desc')->paginate(10);
+                         ->orWhere('nama_belakang', 'like', "%{$search}%")
+                         ->orWhere('jabatan', 'like', "%{$search}%")
+                         ->orWhere('id_anggota', 'like', "%{$search}%");
+        })->orderBy('id_anggota', 'asc')->paginate(10);
         
         return view('anggota.index', compact('anggota', 'search'));
     }
 
-    // Menampilkan form tambah anggota (CREATE - Form)
+    /**
+     * Menampilkan form tambah anggota (CREATE - Form)
+     */
     public function create()
     {
         return view('anggota.create');
     }
 
-    // Menyimpan data anggota baru (CREATE - Store)
+    /**
+     * Menyimpan data anggota baru (CREATE - Store)
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -41,8 +47,6 @@ class AnggotaDprController extends Controller
             'jabatan.required' => 'Jabatan wajib dipilih',
             'status_pernikahan.required' => 'Status pernikahan wajib dipilih',
             'jumlah_anak.required' => 'Jumlah anak wajib diisi',
-            'jumlah_anak.integer' => 'Jumlah anak harus berupa angka',
-            'jumlah_anak.min' => 'Jumlah anak minimal 0',
         ]);
 
         AnggotaDpr::create($request->all());
@@ -50,14 +54,18 @@ class AnggotaDprController extends Controller
         return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil ditambahkan!');
     }
 
-    // Menampilkan form edit anggota (UPDATE - Form)
+    /**
+     * Menampilkan form edit anggota (UPDATE - Form)
+     */
     public function edit($id)
     {
         $anggota = AnggotaDpr::findOrFail($id);
         return view('anggota.edit', compact('anggota'));
     }
 
-    // Mengupdate data anggota (UPDATE - Store)
+    /**
+     * Mengupdate data anggota (UPDATE - Store)
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -70,8 +78,6 @@ class AnggotaDprController extends Controller
             'jabatan.required' => 'Jabatan wajib dipilih',
             'status_pernikahan.required' => 'Status pernikahan wajib dipilih',
             'jumlah_anak.required' => 'Jumlah anak wajib diisi',
-            'jumlah_anak.integer' => 'Jumlah anak harus berupa angka',
-            'jumlah_anak.min' => 'Jumlah anak minimal 0',
         ]);
 
         $anggota = AnggotaDpr::findOrFail($id);
@@ -80,7 +86,9 @@ class AnggotaDprController extends Controller
         return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil diperbarui!');
     }
 
-    // Menghapus data anggota (DELETE)
+    /**
+     * Menghapus data anggota (DELETE)
+     */
     public function destroy($id)
     {
         try {
